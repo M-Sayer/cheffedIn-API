@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS lists;
+
+CREATE TABLE lists (
+  id SERIAL PRIMARY KEY,
+  author_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  list_name TEXT NOT NULL
+);

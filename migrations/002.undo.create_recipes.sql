@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS recipes CASCADE;
+
+DROP TYPE IF EXISTS servings;
+
+DROP TYPE IF EXISTS time_hours;
+
+DROP TYPE IF EXISTS time_minutes;
