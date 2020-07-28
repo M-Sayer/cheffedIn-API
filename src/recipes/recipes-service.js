@@ -5,10 +5,6 @@ const RecipesService = {
   getById(db, id) {
     return db('recipes').select().where({id}).first()
   },
-  getCommentsForRecipe(db, recipe_id) {
-    return db('comments').select()
-      .where({recipe_id})
-  },
   createRecipe(db, newRecipe) {
     return db('recipes').insert(newRecipe)
       .returning('*')  

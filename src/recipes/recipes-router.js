@@ -46,14 +46,7 @@ recipesRouter
       .catch(next)
   })
 
-recipesRouter
-  .route('/:recipe_id/comments')
-  .get((req, res, next) => {
-    RecipesService.getCommentsForRecipe(req.app.get('db'), req.params.recipe_id)
-      .then(comment => {
-        return res.status(200).json(comment)
-      })
-  })
+
 
 recipesRouter
   .route('/:recipe_id/comments/:comment')
