@@ -1,8 +1,4 @@
 const CommentsService = {
-  getCommentsForRecipe(db, recipe_id) {
-    return db('comments').select()
-      .where({recipe_id})
-  },
   createCommentForRecipe(db, recipe_id, newComment) {
     return db('comments').insert(newComment)
       .returning('*')

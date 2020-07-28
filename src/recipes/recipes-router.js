@@ -46,5 +46,13 @@ recipesRouter
       .catch(next)
   })
 
-  
+recipesRouter
+  .route('/:recipe_id/comments')
+  .get((req, res, next) => {
+    RecipesService.getCommentsForRecipe(req.app.get('db'), req.params.recipe_id)
+      .then(comments => res.send(comments))
+      .catch(next)
+  })
+
+
 module.exports = recipesRouter;
