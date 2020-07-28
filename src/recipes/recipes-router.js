@@ -18,7 +18,7 @@ recipesRouter
 
     RecipesService.createRecipe(req.app.get('db'), newRecipe)
       .then(recipe => {
-        res.status(200).json(recipe)
+        res.status(201).json(recipe)
       })
       .catch(next)
   })
@@ -46,11 +46,5 @@ recipesRouter
       .catch(next)
   })
 
-
-
-recipesRouter
-  .route('/:recipe_id/comments/:comment')
-
-
-
+  
 module.exports = recipesRouter;
