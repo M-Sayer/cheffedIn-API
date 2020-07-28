@@ -17,5 +17,6 @@ CREATE TABLE recipes (
   serving_size servings NOT NULL,
   vegetarian BOOLEAN NOT NULL,
   ingredients TEXT NOT NULL,
+  steps TEXT NOT NULL,
   date_added TIMESTAMPTZ default now() NOT NULL
 );

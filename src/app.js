@@ -3,9 +3,11 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
+
 const { NODE_ENV } = require('./config');
 const recipesRouter = require('./recipes/recipes-router');
 const commentsRouter = require('./comments/comments-router');
+const loginRouter = require('./login/login-router');
 
 const app = express();
 
@@ -18,6 +20,7 @@ app.use(helmet());
 app.use(cors());
 app.use('/recipes', recipesRouter);
 app.use('/comments', commentsRouter);
+app.use('/login', loginRouter);
 
 app.get('/', (req, res) => {
   res
