@@ -8,7 +8,8 @@ const RecipesService = {
       
   },
   getById(db, id) {
-    return db('recipes').select().where({id}).first()
+    return this.getAllRecipes(db)
+      .where('recipes.id', id).first()
   },
   createRecipe(db, newRecipe) {
     return db('recipes').insert(newRecipe)
