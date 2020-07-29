@@ -25,7 +25,9 @@ const RecipesService = {
       .delete()
   },
   getCommentsForRecipe(db, recipe_id) {
-    return db('comments').select()
+    return db('comments')
+      .join('users', {'author_id': 'users.id'})
+      .select('comments.id', 'message', 'date_added', 'date_modified', db.ref('users.user_name').as('author'))
       .where({recipe_id})
   },
 }
