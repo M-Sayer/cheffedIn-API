@@ -1,6 +1,11 @@
 const RecipesService = {
   getAllRecipes(db) {
-    return db('recipes').select()
+    return db('recipes')
+      .join('users', {'author_id': 'users.id'})
+      .select(
+        'recipes.id', 'recipes.title', 'recipes.image', 'recipes.about', 'dish_type', 'prep_time_minutes', 'prep_time_hours', 'serving_size', 'vegetarian', 'ingredients', 'steps', 'recipes.author_id', db.ref('users.user_name').as('author') 
+      )
+      
   },
   getById(db, id) {
     return db('recipes').select().where({id}).first()
