@@ -6,9 +6,9 @@ const commentsRouter = express.Router();
 commentsRouter
   .route('/')
   .post(express.json(), (req, res, next) => {
-    const newComment = { ... req.body };
+    const newComment = { ...req.body };
 
-    CommentsService.createCommentForRecipe(req.app.get('db'), req.body.recipe_id, newComment)
+    CommentsService.createCommentForRecipe(req.app.get('db'), newComment)
       .then(comment => {
         res.status(201).json(comment)
       })

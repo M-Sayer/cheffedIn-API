@@ -1,5 +1,5 @@
 const CommentsService = {
-  createCommentForRecipe(db, recipe_id, newComment) {
+  createCommentForRecipe(db, newComment) {
     return db('comments').insert(newComment)
       .returning('*')
       .then(([comment]) => comment)
