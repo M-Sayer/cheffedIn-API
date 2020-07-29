@@ -1,5 +1,7 @@
 DROP TABLE IF EXISTS recipes;
 
+CREATE TYPE dish AS ENUM ('appetizer', 'main', 'side', 'dessert', 'beverage');
+
 CREATE TYPE time_minutes AS ENUM ('0', '15', '30', '45');
 
 CREATE TYPE time_hours AS ENUM ('0', '1', '2', '3');
@@ -12,6 +14,7 @@ CREATE TABLE recipes (
   title TEXT NOT NULL,
   image TEXT,
   about TEXT NOT NULL,
+  dish_type dish NOT NULL,
   prep_time_minutes time_minutes NOT NULL,
   prep_time_hours time_hours NOT NULL,
   serving_size servings NOT NULL,

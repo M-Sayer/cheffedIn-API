@@ -17,11 +17,11 @@ INSERT INTO users (id, user_name, full_name, email, password)
 
 SELECT setval ('users_id_seq', 3);
 
-INSERT INTO recipes (id, author_id, title, image, about, prep_time_minutes, prep_time_hours, serving_size, vegetarian, ingredients, steps, date_added)
+INSERT INTO recipes (id, author_id, title, image, about, dish_type, prep_time_minutes, prep_time_hours, serving_size, vegetarian, ingredients, steps, date_added)
   VALUES
-  (1, 1, 'meat lovers pizza', 'https://loremflickr.com/750/300/landscape?random', 'lorem', '15', '1', '4', 'false', 'some ingredients', 'some steps',  '2020-07-27T18:03:13.574Z'),
-  (2, 2, 'soup', 'https://loremflickr.com/750/300/landscape?random', 'lorem', '45', '0', '6', 'true', 'some ingredients', 'some steps',  '2020-07-27T18:03:13.574Z'),
-  (3, 3, 'salad', 'https://loremflickr.com/750/300/landscape?random', 'lorem', '15', '0', '4', 'true', 'some ingredients', 'some steps', '2020-07-27T18:03:13.574Z');
+  (1, 1, 'meat lovers pizza', 'https://loremflickr.com/750/300/landscape?random', 'lorem', 'main', '15', '1', '4', 'false', 'some ingredients', 'some steps',  '2020-07-27T18:03:13.574Z'),
+  (2, 2, 'soup', 'https://loremflickr.com/750/300/landscape?random', 'lorem', 'side', '45', '0', '6', 'true', 'some ingredients', 'some steps',  '2020-07-27T18:03:13.574Z'),
+  (3, 3, 'salad', 'https://loremflickr.com/750/300/landscape?random', 'lorem', 'appetizer', '15', '0', '4', 'true', 'some ingredients', 'some steps', '2020-07-27T18:03:13.574Z');
 
 SELECT setval ('recipes_id_seq', 3);
 
