@@ -17,6 +17,9 @@ const LoginService = {
         algorithm: 'HS256'
       }
     )
+  },
+  veryifyJwt(token) {
+    return jwt.verify(token, process.env.JWT_SECRET, {algorithms: ['HS256']})
   }  
 }
 

@@ -2,10 +2,11 @@ const express = require('express');
 
 const CommentsService = require('./comments-service');
 const commentsRouter = express.Router();
+const requireJwt = require('../middleware/jwt-auth');
 
 commentsRouter
   .route('/')
-  .post(express.json(), (req, res, next) => {
+  .post(requireJwt, express.json(), (req, res, next) => {
     const newComment = { ...req.body };
 
     CommentsService.createCommentForRecipe(req.app.get('db'), newComment)
@@ -18,12 +19,12 @@ commentsRouter
 
 commentsRouter
   .route('/:comment_id')
-  .delete((req, res, next) => {
+  .delete(requireJwt, (req, res, next) => {
     CommentsService.deleteComment(req.app.get('db'), req.params.comment_id)
       .then(() => res.status(204).end())
       .catch(next)
   })
-  .patch(express.json(), (req, res, next) => {
+  .patch(requireJwt, express.json(), (req, res, next) => {
     const newData = { ...req.body };
     CommentsService.updateComment(req.app.get('db'), req.params.comment_id, newData)
       .then(() => res.status(204).end())
