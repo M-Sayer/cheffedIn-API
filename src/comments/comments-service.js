@@ -1,4 +1,7 @@
 const CommentsService = {
+  getById(db, id) {
+    return db('comments').where({id}).first()
+  },
   createCommentForRecipe(db, newComment) {
     return db('comments').insert(newComment)
       .returning('*')
