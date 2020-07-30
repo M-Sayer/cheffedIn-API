@@ -21,6 +21,9 @@ commentsRouter
 
 commentsRouter
   .route('/:comment_id')
+  // .get(requireJwt, (req, res, next) => {
+  //   //verify 
+  // })
   .delete(requireJwt, (req, res, next) => {
     //verify request user id is same as author id
     //get client uid
