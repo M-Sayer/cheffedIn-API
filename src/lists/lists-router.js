@@ -22,6 +22,20 @@ listsRouter
 listsRouter
   .route('/:list_id')
   .get((req, res, next) => {
+    ListsService.getRecipeById(req.app.get('db'), req.params.list_id)
+      .then(list => {
+        return res.send(list)
+      })
+  })
+  .delete(jwtAuth, (req, res, next) => {
+    ListsService.deleteList(req.app.get('db'), req.params.list_id)
+      .then(() => res.status(204).end())
+      .catch(next)
+  })
+
+listsRouter
+  .route('/:list_id/recipes')
+  .get((req, res, next) => {
     ListsService.getRecipesForList(req.app.get('db'), req.params.list_id)
       .then(recipes => {
         if(!recipes) {
@@ -33,10 +47,4 @@ listsRouter
       })
       .catch(next)
   })
-  .delete(jwtAuth, (req, res, next) => {
-    ListsService.deleteList(req.app.get('db'), req.params.list_id)
-      .then(() => res.status(204).end())
-      .catch(next)
-  })
-
 module.exports = listsRouter;
