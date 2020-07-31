@@ -9,7 +9,8 @@ const recipesRouter = require('./recipes/recipes-router');
 const commentsRouter = require('./comments/comments-router');
 const loginRouter = require('./login/login-router');
 const registerRouter = require('./register/register-router');
-const usersRouter = require('./users/users-router')
+const usersRouter = require('./users/users-router');
+const listsRouter = require('./lists/lists-router');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/comments', commentsRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/users', usersRouter);
+app.use('/lists', listsRouter);
 
 app.get('/', (req, res) => {
   res
