@@ -7,3 +7,5 @@ DROP TYPE IF EXISTS servings;
 DROP TYPE IF EXISTS time_hours;
 
 DROP TYPE IF EXISTS time_minutes;
+
+DROP TYPE IF EXISTS dish;

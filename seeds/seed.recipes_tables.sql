@@ -9,11 +9,11 @@ TRUNCATE
   RESTART IDENTITY CASCADE;
 
 
-INSERT INTO users (id, user_name, full_name, email, password)
+INSERT INTO users (id, user_name, first_name, last_name, email, password)
   VALUES
-  (1, 'user1', 'user one', 'user1@test.com', '$2b$10$VtdQCVjAfp9b/mZ3LBWvQeKZzk657TBsYv8BGucSuC6lYw9ZD2eHK'),
-  (2, 'user2', 'user two', 'user2@test.com', '$2b$10$9/coW7549wUeO//ELPhLqO4OjVBf7HKtoo63qgecd.buBDcYv4Uaa'),
-  (3, 'user3', 'user three', 'user3@test.com', '$2b$10$3LzP6sEW8xja8WfVK78WOOfI7AhDk3jV1BrPN4UCazh1YzjR3kcNa');
+  (1, 'user1', 'user', 'one', 'user1@test.com', '$2b$10$VtdQCVjAfp9b/mZ3LBWvQeKZzk657TBsYv8BGucSuC6lYw9ZD2eHK'),
+  (2, 'user2', 'user', 'two', 'user2@test.com', '$2b$10$9/coW7549wUeO//ELPhLqO4OjVBf7HKtoo63qgecd.buBDcYv4Uaa'),
+  (3, 'user3', 'user', 'three', 'user3@test.com', '$2b$10$3LzP6sEW8xja8WfVK78WOOfI7AhDk3jV1BrPN4UCazh1YzjR3kcNa');
 
 SELECT setval ('users_id_seq', 3);
 
