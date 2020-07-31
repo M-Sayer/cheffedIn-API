@@ -2,6 +2,20 @@ const express = require('express');
 
 const ListsService = require('./lists-service');
 const listsRouter = express.Router();
+const jwtAuth = require('../middleware/jwt-auth')
+
+
+//post new list
+listsRouter
+  .route('/')
+  .post(jwtAuth, express.json(), (req, res, next) => {
+    const newList = { ...req.body, author_id: req.user.id }
+
+    ListsService.postList(req.app.get('db'), newList)
+      .then(list => {
+        return res.send(list)
+      })
+  })
 
 //add auth
 //get all recipes for a given list
