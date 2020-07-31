@@ -9,6 +9,7 @@ const recipesRouter = require('./recipes/recipes-router');
 const commentsRouter = require('./comments/comments-router');
 const loginRouter = require('./login/login-router');
 const registerRouter = require('./register/register-router');
+const usersRouter = require('./users/users-router')
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use('/recipes', recipesRouter);
 app.use('/comments', commentsRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+app.use('/users', usersRouter);
 
 app.get('/', (req, res) => {
   res
