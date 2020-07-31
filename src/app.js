@@ -8,6 +8,7 @@ const { NODE_ENV } = require('./config');
 const recipesRouter = require('./recipes/recipes-router');
 const commentsRouter = require('./comments/comments-router');
 const loginRouter = require('./login/login-router');
+const registerRouter = require('./register/register-router');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use('/recipes', recipesRouter);
 app.use('/comments', commentsRouter);
 app.use('/login', loginRouter);
+app.use('/register', registerRouter);
 
 app.get('/', (req, res) => {
   res
