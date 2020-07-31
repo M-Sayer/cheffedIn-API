@@ -9,6 +9,9 @@ const ListsService = {
     return db('lists').insert(newList)
       .returning('*')
       .then(([list]) => list)
+  },
+  deleteList(db, id) {
+    return db('lists').where({id}).delete()
   }
 }
 
