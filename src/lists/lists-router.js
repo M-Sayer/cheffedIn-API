@@ -22,7 +22,7 @@ listsRouter
 listsRouter
   .route('/:list_id')
   .get((req, res, next) => {
-    ListsService.getRecipeById(req.app.get('db'), req.params.list_id)
+    ListsService.getListById(req.app.get('db'), req.params.list_id)
       .then(list => {
         return res.send(list)
       })
