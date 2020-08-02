@@ -58,6 +58,7 @@ listsRouter
 listsRouter
   .route('/:list_id/recipes/:recipe_id')
   .delete(jwtAuth, (req, res, next) => {
+   console.log(req.params.list_id)
     ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.params.recipe_id)
       .then(recipes => {
         if(!recipes) {
