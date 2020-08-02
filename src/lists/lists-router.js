@@ -54,13 +54,16 @@ listsRouter
       })
       .catch(next)
   })
-  .delete(jwtAuth, express.json(), (req, res, next) => {
-    ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.body.recipe_id)
+
+listsRouter
+  .route('/:list_id/recipes/:recipe_id')
+  .delete(jwtAuth, (req, res, next) => {
+    ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.params.recipe_id)
       .then(recipes => {
         if(!recipes) {
           return res.status(404).json({error: 'not found'})
         }
-        ListsService.deleteRecipeInList(req.app.get('db'), req.params.list_id, req.body.recipe_id)
+        ListsService.deleteRecipeInList(req.app.get('db'), req.params.list_id, req.params.recipe_id)
           .then(() => res.status(204).end())
       })
       .catch(next)
