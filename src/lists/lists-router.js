@@ -32,6 +32,13 @@ listsRouter
       .then(() => res.status(204).end())
       .catch(next)
   })
+  .patch(jwtAuth, express.json(), (req, res, next) => {
+    const newData = { ...req.body }
+
+    ListsService.updateList(req.app.get('db'), req.params.list_id, newData)
+      .then(() => res.status(200).end())
+      .catch(next)
+  })
 
 listsRouter
   .route('/:list_id/recipes')

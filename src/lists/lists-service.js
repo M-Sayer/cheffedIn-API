@@ -2,7 +2,8 @@ const ListsService = {
   getRecipesForList(db, list_id) {
     return db('recipes_in_lists')
       .join('recipes', {'recipe_id': 'recipes.id'})
-      .select('recipes.id', 'author_id', 'title', 'image', 'about', 'dish_type', 'prep_time_minutes', 'prep_time_hours', 'serving_size')
+      .join('lists', {'list_id': 'lists.id'})
+      .select('recipes.id', 'recipes.author_id', 'title', 'image', 'about', 'dish_type', 'prep_time_minutes', 'prep_time_hours', 'serving_size')
       .where({list_id})
   },
   getListById(db, id) {
@@ -15,6 +16,9 @@ const ListsService = {
   },
   deleteList(db, id) {
     return db('lists').where({id}).delete()
+  },
+  updateList(db, id, newData) {
+    return db('lists').where({id}).update(newData)
   }
 }
 
