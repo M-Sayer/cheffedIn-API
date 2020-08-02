@@ -54,7 +54,7 @@ listsRouter
       })
       .catch(next)
   })
-  .delete(express.json(), (req, res, next) => {
+  .delete(jwtAuth, express.json(), (req, res, next) => {
     ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.body.recipe_id)
       .then(recipes => {
         if(!recipes) {
