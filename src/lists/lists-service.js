@@ -6,6 +6,20 @@ const ListsService = {
       .select('recipes.id', 'recipes.author_id', 'title', 'image', 'about', 'dish_type', 'prep_time_minutes', 'prep_time_hours', 'serving_size')
       .where({list_id})
   },
+  getRecipeForListById(db, list_id, recipe_id) {
+    return db('recipes_in_lists')
+      .join('recipes', {'recipe_id': 'recipes.id'})
+      .select()
+      .where({list_id, recipe_id})
+      .first()
+  },
+  deleteRecipeInList(db, list_id, recipe_id) {
+    return db('recipes_in_lists')
+      .join('recipes', {'recipe_id': 'recipes.id'})
+      .select()
+      .where({list_id, recipe_id})
+      .delete()
+  },
   getListById(db, id) {
     return db('lists').select().where({id}).first()
   },
