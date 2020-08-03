@@ -20,6 +20,12 @@ const ListsService = {
       .where({list_id, recipe_id})
       .delete()
   },
+  addRecipeToList(db, newEntry) {
+    return db('recipes_in_lists')
+      .insert(newEntry)
+      .returning('*')
+      .then(([entry]) => entry)
+  },
   getListById(db, id) {
     return db('lists').select().where({id}).first()
   },

@@ -58,7 +58,6 @@ listsRouter
 listsRouter
   .route('/:list_id/recipes/:recipe_id')
   .delete(jwtAuth, (req, res, next) => {
-   console.log(req.params.list_id)
     ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.params.recipe_id)
       .then(recipes => {
         if(!recipes) {
@@ -67,6 +66,13 @@ listsRouter
         ListsService.deleteRecipeInList(req.app.get('db'), req.params.list_id, req.params.recipe_id)
           .then(() => res.status(204).end())
       })
+      .catch(next)
+  })
+  .post(jwtAuth, express.json(), (req, res, next) => {
+    console.log(req.body)
+    const newEntry = { ...req.body }
+    ListsService.addRecipeToList(req.app.get('db'), newEntry)
+      .then(() => res.status(204).end())
       .catch(next)
   })
 
