@@ -3,6 +3,7 @@ const express = require('express');
 const RecipesService = require('./recipes-service');
 const recipesRouter = express.Router();
 const jwtAuth = require('../middleware/jwt-auth');
+const userAuth = require('../middleware/recipes-user-auth')
 
 recipesRouter
   .route('/')
@@ -34,14 +35,14 @@ recipesRouter
       })
       .catch(next)
   })
-  .patch(jwtAuth, express.json(), (req, res, next) => {
+  .patch(jwtAuth, userAuth, express.json(), (req, res, next) => {
     const newData = { ...req.body};
 
     RecipesService.updateRecipe(req.app.get('db'), req.params.recipe_id, newData)
       .then(() => res.status(204).end())
       .catch(next)
   })
-  .delete(jwtAuth, (req, res, next) => {
+  .delete(jwtAuth, userAuth, (req, res, next) => {
     RecipesService.deleteRecipe(req.app.get('db'), req.params.recipe_id)
       .then(() => res.status(204).end())
       .catch(next)

@@ -3,7 +3,7 @@ const express = require('express');
 const CommentsService = require('./comments-service');
 const commentsRouter = express.Router();
 const jwtAuth = require('../middleware/jwt-auth');
-const userAuth = require('../middleware/comment-user-auth');
+const userAuth = require('../middleware/comments-user-auth');
 
 commentsRouter
   .route('/')
