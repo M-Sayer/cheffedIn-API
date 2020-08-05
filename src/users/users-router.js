@@ -3,6 +3,8 @@ const express = require('express')
 const UsersService = require('./users-service')
 const usersRouter = express.Router()
 const jwtAuth = require('../middleware/jwt-auth')
+const ListsService = require('../lists/lists-service')
+const RecipesService = require('../recipes/recipes-service')
 
 
 usersRouter
@@ -14,7 +16,10 @@ usersRouter
         if(!lists) {
           return res.status(404).json({error: 'no lists found'})
         }
-        res.send(lists)
+        let serializedLists = lists.map(list => ListsService.serializeList(list)
+        )
+
+        res.send(serializedLists)
       })
       .catch(next)
   })
@@ -27,7 +32,10 @@ usersRouter
         if(!recipes) {
           return res.status(404).json({ error: 'no recipes found'})
         }
-        res.send(recipes)
+        let serializedRecipes = recipes.map(recipe => RecipesService.serializeRecipe(recipe)
+        )
+
+        res.send(serializedRecipes)
       })
       .catch(next)
   })
