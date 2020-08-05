@@ -4,7 +4,7 @@ const UsersService = require('./users-service')
 const usersRouter = express.Router()
 const jwtAuth = require('../middleware/jwt-auth')
 
-//add auth
+
 usersRouter
   .route('/:user_id/lists')
   .get(jwtAuth, (req, res, next) => {

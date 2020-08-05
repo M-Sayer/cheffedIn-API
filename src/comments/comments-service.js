@@ -1,3 +1,5 @@
+const xss = require('xss')
+
 const CommentsService = {
   getById(db, id) {
     return db('comments').where({id}).first()
@@ -12,6 +14,15 @@ const CommentsService = {
   },
   updateComment(db, id, newData) {
     return db('comments').where({id}).update(newData)
+  },
+  serializeComment(comment) {
+    return {
+      id: comment.id,
+      recipe_id: comment.recipe_id,
+      author_id: comment.author_id,
+      message: xss(comment.message),
+      date_added: comment.date_added
+    }
   }
 }
 
