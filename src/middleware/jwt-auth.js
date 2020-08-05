@@ -1,6 +1,6 @@
 const LoginService = require('../login/login-service');
 
-function requireJwt(req, res, next) {
+function jwtAuth(req, res, next) {
   const authToken = req.get('Authorization') || '';
 
   let bearerToken;
@@ -37,4 +37,4 @@ function requireJwt(req, res, next) {
   }
 }
 
-module.exports = requireJwt;
+module.exports = jwtAuth;

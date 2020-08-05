@@ -3,6 +3,7 @@ const express = require('express');
 const ListsService = require('./lists-service');
 const listsRouter = express.Router();
 const jwtAuth = require('../middleware/jwt-auth')
+const userAuth = require('../middleware/lists-user-auth')
 
 
 //post new list
@@ -17,22 +18,21 @@ listsRouter
       })
   })
 
-//add auth
-//get all recipes for a given list
 listsRouter
   .route('/:list_id')
-  .get(jwtAuth, (req, res, next) => {
-    ListsService.getListById(req.app.get('db'), req.params.list_id)
-      .then(list => {
-        return res.send(list)
-      })
+  .get(jwtAuth, userAuth, (req, res, next) => {
+    if(req.list) {
+      return res.send(req.list)
+    } else {
+      return res.status(500).json({ error: 'something went wrong, please try again later'})
+    }
   })
-  .delete(jwtAuth, (req, res, next) => {
+  .delete(jwtAuth, userAuth, (req, res, next) => {
     ListsService.deleteList(req.app.get('db'), req.params.list_id)
       .then(() => res.status(204).end())
       .catch(next)
   })
-  .patch(jwtAuth, express.json(), (req, res, next) => {
+  .patch(jwtAuth, userAuth, express.json(), (req, res, next) => {
     const newData = { ...req.body }
 
     ListsService.updateList(req.app.get('db'), req.params.list_id, newData)
@@ -40,9 +40,10 @@ listsRouter
       .catch(next)
   })
 
+  //get all recipes for given list
 listsRouter
   .route('/:list_id/recipes')
-  .get(jwtAuth, (req, res, next) => {
+  .get(jwtAuth, userAuth, (req, res, next) => {
     ListsService.getRecipesForList(req.app.get('db'), req.params.list_id)
       .then(recipes => {
         if(!recipes) {
@@ -55,9 +56,10 @@ listsRouter
       .catch(next)
   })
 
+//specific recipe in a list
 listsRouter
   .route('/:list_id/recipes/:recipe_id')
-  .delete(jwtAuth, (req, res, next) => {
+  .delete(jwtAuth, userAuth, (req, res, next) => {
     ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.params.recipe_id)
       .then(recipes => {
         if(!recipes) {
