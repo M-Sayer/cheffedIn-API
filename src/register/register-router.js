@@ -8,6 +8,13 @@ registerRouter
   .route('/')
   .post(express.json(), (req, res, next) => {
     let newUser = { ...req.body }
+
+    for (const [key, value] of Object.entries(newUser))
+    if (value == null)
+      return res.status(400).json({
+        error: `Missing '${key}' in request body`
+      })
+
     //validate username is available
     RegisterService.checkNameAvailable(req.app.get('db'), req.body.user_name)
       .then(user => {
