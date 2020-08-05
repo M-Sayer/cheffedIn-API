@@ -21,7 +21,7 @@ listsRouter
 //get all recipes for a given list
 listsRouter
   .route('/:list_id')
-  .get((req, res, next) => {
+  .get(jwtAuth, (req, res, next) => {
     ListsService.getListById(req.app.get('db'), req.params.list_id)
       .then(list => {
         return res.send(list)
@@ -42,7 +42,7 @@ listsRouter
 
 listsRouter
   .route('/:list_id/recipes')
-  .get((req, res, next) => {
+  .get(jwtAuth, (req, res, next) => {
     ListsService.getRecipesForList(req.app.get('db'), req.params.list_id)
       .then(recipes => {
         if(!recipes) {

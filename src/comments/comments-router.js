@@ -2,11 +2,11 @@ const express = require('express');
 
 const CommentsService = require('./comments-service');
 const commentsRouter = express.Router();
-const requireJwt = require('../middleware/jwt-auth');
+const jwtAuth = require('../middleware/jwt-auth');
 
 commentsRouter
   .route('/')
-  .post(requireJwt, express.json(), (req, res, next) => {
+  .post(jwtAuth, express.json(), (req, res, next) => {
     const newComment = { ...req.body };
 
     newComment.author_id = req.user.id
@@ -21,10 +21,10 @@ commentsRouter
 
 commentsRouter
   .route('/:comment_id')
-  // .get(requireJwt, (req, res, next) => {
+  // .get(jwtAuth, (req, res, next) => {
   //   //verify 
   // })
-  .delete(requireJwt, (req, res, next) => {
+  .delete(jwtAuth, (req, res, next) => {
     //verify request user id is same as author id
     //get client uid
     const reqId = req.user.id;
@@ -51,7 +51,7 @@ commentsRouter
       })
       .catch(next)
   })
-  .patch(requireJwt, express.json(), (req, res, next) => {
+  .patch(jwtAuth, express.json(), (req, res, next) => {
     const newData = { ...req.body };
     
     const reqId = req.user.id
