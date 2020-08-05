@@ -86,6 +86,13 @@ listsRouter
   })
   .post(jwtAuth, express.json(), (req, res, next) => {
     const newEntry = { ...req.body }
+
+    for (const [key, value] of Object.entries(newEntry))
+    if (value == null)
+      return res.status(400).json({
+        error: `Missing '${key}' in request body`
+      })
+
     ListsService.addRecipeToList(req.app.get('db'), newEntry)
       .then(() => res.status(204).end())
       .catch(next)
