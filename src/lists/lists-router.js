@@ -1,6 +1,7 @@
 const express = require('express');
 
 const ListsService = require('./lists-service');
+const RecipesService = require('../recipes/recipes-service')
 const listsRouter = express.Router();
 const jwtAuth = require('../middleware/jwt-auth')
 const userAuth = require('../middleware/lists-user-auth')
@@ -60,10 +61,14 @@ listsRouter
             error: 'no recipes found'
           })
         }
-        return res.send(recipes)
+        let serializedRecipes = recipes.map(recipe => RecipesService.serializeRecipe(recipe)
+        )
+
+        res.send(serializedRecipes)
       })
       .catch(next)
   })
+      
 
 //specific recipe in a list
 listsRouter
@@ -80,7 +85,6 @@ listsRouter
       .catch(next)
   })
   .post(jwtAuth, express.json(), (req, res, next) => {
-    console.log(req.body)
     const newEntry = { ...req.body }
     ListsService.addRecipeToList(req.app.get('db'), newEntry)
       .then(() => res.status(204).end())
