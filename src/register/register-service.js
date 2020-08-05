@@ -4,6 +4,9 @@ const RegisterService = {
   checkNameAvailable(db, user_name) {
     return db('users').where({user_name}).first()
   },
+  checkEmailAvailable(db, email) {
+    return db('users').where({ email }).first()
+  },
   hashPassword(password) {
     return bcrypt.hash(password, 10)
   },
