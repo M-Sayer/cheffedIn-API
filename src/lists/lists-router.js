@@ -10,19 +10,28 @@ const userAuth = require('../middleware/lists-user-auth')
 listsRouter
   .route('/')
   .post(jwtAuth, express.json(), (req, res, next) => {
-    const newList = { ...req.body, author_id: req.user.id }
+    const newList = { ...req.body }
+
+    for (const [key, value] of Object.entries(newList))
+      if (value == null)
+        return res.status(400).json({
+          error: `Missing '${key}' in request body`
+        })
+
+    newList.author_id = req.user.id
 
     ListsService.postList(req.app.get('db'), newList)
       .then(list => {
-        return res.send(list)
+        res.status(201).json(ListsService.serializeList(list))
       })
+      .catch(next)
   })
 
 listsRouter
   .route('/:list_id')
   .get(jwtAuth, userAuth, (req, res, next) => {
     if(req.list) {
-      return res.send(req.list)
+      res.send(ListsService.serializeList(req.list))
     } else {
       return res.status(500).json({ error: 'something went wrong, please try again later'})
     }

@@ -1,3 +1,5 @@
+const xss = require('xss')
+
 const RecipesService = {
   getAllRecipes(db) {
     return db('recipes')
@@ -30,6 +32,16 @@ const RecipesService = {
       .select('comments.id', 'message', 'date_added', 'date_modified', 'author_id', db.ref('users.user_name').as('author'))
       .where({recipe_id})
   },
+  serializeRecipe(recipe) {
+    return {
+      ...recipe,
+      title: xss(recipe.title),
+      image: xss(recipe.image),
+      about: xss(recipe.about),
+      ingredients: xss(recipe.ingredients),
+      steps: xss(recipe.steps),
+    }
+  }
 }
 
 module.exports = RecipesService;

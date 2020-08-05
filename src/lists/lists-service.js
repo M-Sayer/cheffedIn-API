@@ -1,3 +1,5 @@
+const xss = require('xss')
+
 const ListsService = {
   getRecipesForList(db, list_id) {
     return db('recipes_in_lists')
@@ -39,6 +41,13 @@ const ListsService = {
   },
   updateList(db, id, newData) {
     return db('lists').where({id}).update(newData)
+  },
+  serializeList(list) {
+    return {
+      id: list.id,
+      author_id: list.author_id,
+      list_name: xss(list.list_name)
+    }
   }
 }
 

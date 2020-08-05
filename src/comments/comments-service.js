@@ -17,11 +17,8 @@ const CommentsService = {
   },
   serializeComment(comment) {
     return {
-      id: comment.id,
-      recipe_id: comment.recipe_id,
-      author_id: comment.author_id,
+      ...comment,
       message: xss(comment.message),
-      date_added: comment.date_added
     }
   }
 }
