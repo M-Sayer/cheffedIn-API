@@ -1,26 +1,19 @@
-# Express Boilerplate!
+# cheffedIn
 
-This is a boilerplate project used for starting new projects!
+(https://cheffedin-capstone.vercel.app/)
 
-## Set up
+## Summary
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+This app was built during COVID-19, a time which saw more people staying at home, as well as making more meals at home and experimenting with more varieties of cooking. This app is designed to allow users to share their recipes with others, search for recipes uploaded by other users, save recipes from other users to their own lists so that they can try them later, and interact with other users through commenting on recipes.
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+(./images/image1.png)
+(./images/image2.png)
+(./images/image3.png)
+(./images/image4.png)
+(./images/image5.png)
+(./images/image6.png)
 
-## Scripts
 
-Start the application `npm start`
+This project was built using React for the front end, Express for the API, and postgreSQL for the Database. The client is deployed to Vercel, and the server and database is deployed to Heroku. 
 
-Start nodemon for the application `npm run dev`
-
-Run the tests `npm test`
-
-## Deploying
-
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+Client code can be viewed here (https://github.com/M-Sayer/Capstone-Client)
