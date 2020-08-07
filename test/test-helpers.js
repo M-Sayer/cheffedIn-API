@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 function cleanTables(db) {
   return db.raw(
@@ -18,21 +19,24 @@ function makeUsersArray() {
     {
       id: 1,
       user_name: 'user1',
-      full_name: 'user one',
+      first_name: 'user',
+      last_name: 'one',
       email: 'user1@test.com',
       password: 'password1'
     },
     {
       id: 2,
       user_name: 'user2',
-      full_name: 'user two',
+      first_name: 'user',
+      last_name: 'two',
       email: 'user2@test.com',
       password: 'password2'
     },
     {
       id: 3,
       user_name: 'user3',
-      full_name: 'user three',
+      first_name: 'user',
+      last_name: 'three',
       email: 'user3@test.com',
       password: 'password3'
     },
@@ -47,11 +51,13 @@ function makeRecipesArray(users) {
       title: 'meat lovers pizza',
       image: 'https://loremflickr.com/750/300/landscape?random',
       about: 'lorem',
+      dish_type: 'main',
       prep_time_minutes: '15',
       prep_time_hours: '1',
       serving_size: '4',
       vegetarian: false,
       ingredients: 'some ingredients',
+      steps: 'some steps',
       date_added: '2020-07-27T18:03:13.574Z'
     },
     {
@@ -60,11 +66,13 @@ function makeRecipesArray(users) {
       title: 'soup',
       image: 'https://loremflickr.com/750/300/landscape?random',
       about: 'lorem',
+      dish_type: 'side',
       prep_time_minutes: '45',
       prep_time_hours: '0',
       serving_size: '6',
       vegetarian: true,
       ingredients: 'some ingredients',
+      steps: 'some steps',
       date_added: '2020-07-27T18:03:13.574Z'
     },  
     {
@@ -73,11 +81,13 @@ function makeRecipesArray(users) {
       title: 'salad',
       image: 'https://loremflickr.com/750/300/landscape?random',
       about: 'lorem',
+      dish_type: 'appetizer',
       prep_time_minutes: '15',
       prep_time_hours: '0',
       serving_size: '4',
       vegetarian: true,
       ingredients: 'some ingredients',
+      steps: 'some steps',
       date_added: '2020-07-27T18:03:13.574Z'
     },    
   ]
@@ -201,11 +211,52 @@ function seedTables(db, users, recipes, comments, lists, recipesInLists) {
   })
 }
 
+function makeExpectedRecipes(users, recipes) {
+  const expectedRecipes = recipes.map(recipe => {
+    const author = users.find(user => user.id === recipe.author_id)
+      return {
+        id: recipe.id,
+        title: recipe.title,
+        image: recipe.image,
+        about: recipe.about,
+        dish_type: recipe.dish_type,
+        prep_time_minutes: recipe.prep_time_minutes,
+        prep_time_hours: recipe.prep_time_hours,
+        serving_size: recipe.serving_size,
+        vegetarian: recipe.vegetarian,
+        ingredients: recipe.ingredients,
+        steps: recipe.steps,
+        author_id: author.id,
+        author: author.user_name
+      }
+  })
+  return expectedRecipes
+}
+
+function makeExpectedComments(recipeId, comments, users) {
+  const expectedComments = comments.filter(comment => comment.id === recipeId).map(comment => {
+   delete comment.recipe_id
+   const author = users.find(user => user.id === comment.author_id)
+   return { ...comment, author: author.user_name, date_modified: null }
+  })
+  return expectedComments
+}
+
+function makeAuthHeaders(user, secret = process.env.JWT_SECRET) {
+  //create jwt
+   const token = jwt.sign(
+     {user_id: user.id}, secret, {subject: user.user_name, algorithm: 'HS256'}
+   )
+   return `Bearer ${token}`
+ }
 
 
 module.exports = {
   cleanTables,
   makeFixtures,
   seedUsers, 
-  seedTables
+  seedTables,
+  makeExpectedRecipes,
+  makeExpectedComments,
+  makeAuthHeaders
 }

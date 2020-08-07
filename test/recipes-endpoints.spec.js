@@ -4,7 +4,7 @@ const app = require('../src/app');
 const helpers = require('./test-helpers');
 const supertest = require('supertest');
 
-describe.only('recipes endpoints', () => {
+describe('recipes endpoints', () => {
   //create test seed data
   const {
     users, recipes, comments, lists, recipesInLists
@@ -16,7 +16,7 @@ describe.only('recipes endpoints', () => {
   before('create db connection', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL
+      connection: process.env.TEST_DATABASE_URL
     })
     app.set('db', db);
   })
@@ -36,9 +36,11 @@ describe.only('recipes endpoints', () => {
       })
       
       it('responds 200 with list of recipes', () => {
+        const expectedRecipes = helpers.makeExpectedRecipes(users, recipes);
+
         return supertest(app)
           .get('/recipes')
-          .expect(200, recipes)
+          .expect(200, expectedRecipes)
 
       })
     })
@@ -52,9 +54,10 @@ describe.only('recipes endpoints', () => {
       })
 
       it('responds 200 with specified recipe', () => {
+        const expectedRecipes = helpers.makeExpectedRecipes(users, recipes)
         return supertest(app)
           .get('/recipes/1')
-          .expect(200, recipes[0])
+          .expect(200, expectedRecipes[0])
       })
     })
   })
@@ -67,12 +70,35 @@ describe.only('recipes endpoints', () => {
 
       it('responds 200 with all comments for specified recipe', () => {
         const id = 1;
-        const findRecipe = comments.filter(comment => comment.recipe_id === id);
-        const expected = { ...findRecipe[0], date_modified: null};
+        const expectedComments = helpers.makeExpectedComments(id, comments, users)
+        
         return supertest(app)
           .get(`/recipes/${id}/comments`)
-          .expect(200, expected)
+          .expect(200, expectedComments)
       })
+    })
+  })
+
+  describe('DELETE /recipes/:recipe_id', () => {
+    beforeEach('insert data', () => {
+      return helpers.seedTables(db, users, recipes, comments, lists, recipesInLists)
+    })
+
+    it('deletes recipe, responds 204', () => {
+      const recipe = recipes.find(recipe => recipe.id === 1)
+      const user = users.find(user => user.id === recipe.author_id)
+      const expected = helpers.makeExpectedRecipes(users, recipes).filter(recipe => recipe.id !== 1)
+      
+
+      return supertest(app)
+        .delete('/recipes/1')
+        .set('Authorization', helpers.makeAuthHeaders(user))
+        .expect(204)
+        .then(() => {
+          return supertest(app)
+            .get('/recipes')
+            .expect(expected)
+        })
     })
   })
 
