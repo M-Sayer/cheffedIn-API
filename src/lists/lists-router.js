@@ -75,8 +75,8 @@ listsRouter
   .route('/:list_id/recipes/:recipe_id')
   .delete(jwtAuth, userAuth, (req, res, next) => {
     ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.params.recipe_id)
-      .then(recipes => {
-        if(!recipes) {
+      .then(recipe => {
+        if(!recipe) {
           return res.status(404).json({error: 'not found'})
         }
         ListsService.deleteRecipeInList(req.app.get('db'), req.params.list_id, req.params.recipe_id)
@@ -93,9 +93,29 @@ listsRouter
         error: `Missing '${key}' in request body`
       })
 
-    ListsService.addRecipeToList(req.app.get('db'), newEntry)
-      .then(() => res.status(204).end())
-      .catch(next)
+    //check if recipe is already in list
+    ListsService.getListById(req.app.get('db'), req.params.list_id)
+      .then(list => {
+        if(!list) {
+          return res.status(404).json({
+            error: 'list not found'
+          })
+        }
+        ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.params.recipe_id)
+          .then(recipe => {
+            if(!recipe) {
+              console.log(recipe)
+              return ListsService.addRecipeToList(req.app.get('db'), newEntry)
+                .then(() => res.status(204).end())
+                .catch(next)
+            }
+            res.status(409).json({
+              error: 'Recipe already in list'
+            }) 
+          })
+      })
+
+    
   })
 
 
