@@ -6,22 +6,28 @@
 
 This app was built during COVID-19, a time which saw more people staying at home, as well as making more meals at home and experimenting with more varieties of cooking. This app is designed to allow users to share their recipes with others, search for recipes uploaded by other users, save recipes from other users to their own lists so that they can try them later, and interact with other users through commenting on recipes.
 
-This project was built utilizing Javascript/CSS & React/JSX for the front end client. For the back end, express.js and Node.js were utilized to architect the REST API, with postgreSQL for the database. 
+This project was built utilizing Javascript/CSS & React/JSX for the front end client. For the back end, express.js and Node.js were utilized to architect the REST API, with postgreSQL for the database. It was designed mobile-first.
 
 The client is deployed to Vercel, and the server and database are deployed to Heroku. 
 
-Basic smoke testing has been added to the React components, and HTTP integration testing was implemented using Mocha and Chai. User authentication was implemented using JWT tokens, and passwords were encrypted using bcrypt with 256 encryption and a salt of 10. The XSS library was also implemented for basic security, to sanitize and prevent corss-site scripting
+Basic smoke testing has been added to the React components, and HTTP integration testing was implemented using Mocha and Chai. User authentication was implemented using JWT tokens, and passwords were encrypted using bcrypt with 256 encryption and a salt of 10. The XSS library was also implemented for basic security, to sanitize and prevent cross-site scripting
 
 The Formik library was researched and implemented for the majority of forms on the site, and a simple implementation of the Unsplash API was included in the create recipe form, to demonstrate the ability to learn and work with 3rd party API's. 
 
-Backend code can be viewed here (https://github.com/M-Sayer/Capstone-API)
+Frontend code can be viewed here (https://github.com/M-Sayer/cheffedIn-Client)
+
 *see API documentation below*
 
 ![image1](./images/image1.png)
+# 
 ![image2](./images/image2.png)
+# 
 ![image3](./images/image3.png)
+# 
 ![image4](./images/image4.png)
+# 
 ![image5](./images/image5.png)
+# 
 ![image6](./images/image6.png)
 
 API Documentation:
