@@ -46,7 +46,7 @@ listsRouter
     const newData = { ...req.body }
 
     ListsService.updateList(req.app.get('db'), req.params.list_id, newData)
-      .then(() => res.status(200).end())
+      .then(() => res.status(204).end())
       .catch(next)
   })
 
