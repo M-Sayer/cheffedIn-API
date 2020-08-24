@@ -1,6 +1,6 @@
 # cheffedIn
 
-(https://cheffedin-capstone.vercel.app/)
+(https://cheffedin.vercel.app/)
 
 ## Summary
 
