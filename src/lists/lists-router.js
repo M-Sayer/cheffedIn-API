@@ -106,7 +106,7 @@ listsRouter
             if(!recipe) {
               console.log(recipe)
               return ListsService.addRecipeToList(req.app.get('db'), newEntry)
-                .then(() => res.status(204).end())
+                .then(() => res.status(200).end())
                 .catch(next)
             }
             res.status(409).json({
