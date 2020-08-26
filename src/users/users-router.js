@@ -1,10 +1,10 @@
-const express = require('express')
+const express = require('express');
 
-const UsersService = require('./users-service')
-const usersRouter = express.Router()
-const jwtAuth = require('../middleware/jwt-auth')
-const ListsService = require('../lists/lists-service')
-const RecipesService = require('../recipes/recipes-service')
+const UsersService = require('./users-service');
+const usersRouter = express.Router();
+const jwtAuth = require('../middleware/jwt-auth');
+const ListsService = require('../lists/lists-service');
+const RecipesService = require('../recipes/recipes-service');
 
 
 usersRouter
@@ -14,15 +14,15 @@ usersRouter
     UsersService.getUserLists(req.app.get('db'), req.params.user_id)
       .then(lists => {
         if(!lists) {
-          return res.status(404).json({error: 'no lists found'})
+          return res.status(404).json({error: 'no lists found'});
         }
         let serializedLists = lists.map(list => ListsService.serializeList(list)
-        )
+        );
 
-        res.send(serializedLists)
+        res.send(serializedLists);
       })
-      .catch(next)
-  })
+      .catch(next);
+  });
 
 usersRouter
   .route('/:user_id/recipes')
@@ -30,15 +30,15 @@ usersRouter
     UsersService.getUserRecipes(req.app.get('db'), req.params.user_id)
       .then(recipes => {
         if(!recipes) {
-          return res.status(404).json({ error: 'no recipes found'})
+          return res.status(404).json({ error: 'no recipes found'});
         }
         let serializedRecipes = recipes.map(recipe => RecipesService.serializeRecipe(recipe)
-        )
+        );
 
-        res.send(serializedRecipes)
+        res.send(serializedRecipes);
       })
-      .catch(next)
-  })
+      .catch(next);
+  });
 
 
 module.exports = usersRouter;

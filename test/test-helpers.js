@@ -11,7 +11,7 @@ function cleanTables(db) {
     users
     RESTART IDENTITY CASCADE;
     `
-  )
+  );
 }
 
 function makeUsersArray() {
@@ -40,7 +40,7 @@ function makeUsersArray() {
       email: 'user3@test.com',
       password: 'password3'
     },
-  ]
+  ];
 };
 
 function makeRecipesArray(users) {
@@ -90,7 +90,7 @@ function makeRecipesArray(users) {
       steps: 'some steps',
       date_added: '2020-07-27T18:03:13.574Z'
     },    
-  ]
+  ];
 };
 
 function makeCommentsArray(users, recipes) {
@@ -116,7 +116,7 @@ function makeCommentsArray(users, recipes) {
       message: 'lovely',
       date_added: '2020-07-27T18:03:13.574Z'
     },
-  ]
+  ];
 };
 
 function makeListsArray(users) {
@@ -137,7 +137,7 @@ function makeListsArray(users) {
       list_name: 'make later'
     },
 
-  ]
+  ];
 };
 
 function makeRecipesInListsArray(recipes, lists) {
@@ -157,7 +157,7 @@ function makeRecipesInListsArray(recipes, lists) {
       recipe_id: recipes[2].id,
       list_id: lists[1].id
     },
-  ]
+  ];
 };
 
 function makeFixtures() {
@@ -174,46 +174,46 @@ function seedUsers(db, users) {
   const hashedUsers = users.map(user => ({
     ...user,
     password: bcrypt.hashSync(user.password, 10)
-  }))
+  }));
   
   return db('users').insert(hashedUsers)
     .then(() => {
       return db.raw(`
-      SELECT setval ('users_id_seq', ?)`, [users[users.length-1].id])
-    })
+      SELECT setval ('users_id_seq', ?)`, [users[users.length-1].id]);
+    });
 }
 
 function seedTables(db, users, recipes, comments, lists, recipesInLists) {
   return db.transaction(async trx => {
-    await seedUsers(trx, users)
+    await seedUsers(trx, users);
 
-    await trx('recipes').insert(recipes)
+    await trx('recipes').insert(recipes);
     
     await trx.raw(`
-    SELECT setval ('recipes_id_seq', ?)`, [recipes[recipes.length-1].id])
+    SELECT setval ('recipes_id_seq', ?)`, [recipes[recipes.length-1].id]);
 
-    await trx('comments').insert(comments)
+    await trx('comments').insert(comments);
 
     await trx.raw(`
     SELECT setval ('comments_id_seq', ?)`, [comments[comments.length-1].id]
-    )
+    );
 
-    await trx('lists').insert(lists)
-
-    await trx.raw(`
-    SELECT setval ('lists_id_seq', ?)`, [lists[lists.length-1].id])
-
-    await trx('recipes_in_lists').insert(recipesInLists)
+    await trx('lists').insert(lists);
 
     await trx.raw(`
-    SELECT setval ('recipes_in_lists_id_seq', ?)`, [recipesInLists[recipesInLists.length-1].id])
+    SELECT setval ('lists_id_seq', ?)`, [lists[lists.length-1].id]);
 
-  })
+    await trx('recipes_in_lists').insert(recipesInLists);
+
+    await trx.raw(`
+    SELECT setval ('recipes_in_lists_id_seq', ?)`, [recipesInLists[recipesInLists.length-1].id]);
+
+  });
 }
 
 function makeExpectedRecipes(users, recipes) {
   const expectedRecipes = recipes.map(recipe => {
-    const author = users.find(user => user.id === recipe.author_id)
+    const author = users.find(user => user.id === recipe.author_id);
       return {
         id: recipe.id,
         title: recipe.title,
@@ -228,26 +228,26 @@ function makeExpectedRecipes(users, recipes) {
         steps: recipe.steps,
         author_id: author.id,
         author: author.user_name
-      }
-  })
-  return expectedRecipes
+      };
+  });
+  return expectedRecipes;
 }
 
 function makeExpectedComments(recipeId, comments, users) {
   const expectedComments = comments.filter(comment => comment.id === recipeId).map(comment => {
-   delete comment.recipe_id
-   const author = users.find(user => user.id === comment.author_id)
-   return { ...comment, author: author.user_name, date_modified: null }
-  })
-  return expectedComments
+   delete comment.recipe_id;
+   const author = users.find(user => user.id === comment.author_id);
+   return { ...comment, author: author.user_name, date_modified: null };
+  });
+  return expectedComments;
 }
 
 function makeAuthHeaders(user, secret = process.env.JWT_SECRET) {
   //create jwt
    const token = jwt.sign(
      {user_id: user.id}, secret, {subject: user.user_name, algorithm: 'HS256'}
-   )
-   return `Bearer ${token}`
+   );
+   return `Bearer ${token}`;
  }
 
 
@@ -259,4 +259,4 @@ module.exports = {
   makeExpectedRecipes,
   makeExpectedComments,
   makeAuthHeaders
-}
+};

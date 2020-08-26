@@ -10,18 +10,18 @@ function userAuth(req, res, next) {
       if(!list) {
         return res.status(404).json({
           error: 'list not found'
-        })
+        });
       }
-      uid = list.author_id
+      uid = list.author_id;
       if(uid !== reqId) {
         return res.status(401).json({
           error: 'unauthorized access'
-        })
+        });
       }
-      req.list = list 
-      next()
+      req.list = list; 
+      next();
     })
-    .catch(next)
+    .catch(next);
 }
 
 module.exports = userAuth;

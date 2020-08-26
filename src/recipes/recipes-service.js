@@ -1,4 +1,4 @@
-const xss = require('xss')
+const xss = require('xss');
 
 const RecipesService = {
   getAllRecipes(db) {
@@ -6,31 +6,31 @@ const RecipesService = {
       .join('users', {'author_id': 'users.id'})
       .select(
         'recipes.id', 'recipes.title', 'recipes.image', 'recipes.about', 'dish_type', 'prep_time_minutes', 'prep_time_hours', 'serving_size', 'vegetarian', 'ingredients', 'steps', 'recipes.author_id', db.ref('users.user_name').as('author') 
-      )
+      );
       
   },
   getById(db, id) {
     return this.getAllRecipes(db)
-      .where('recipes.id', id).first()
+      .where('recipes.id', id).first();
   },
   createRecipe(db, newRecipe) {
     return db('recipes').insert(newRecipe)
       .returning('*')  
-      .then(([recipe]) => recipe)
+      .then(([recipe]) => recipe);
   },
   updateRecipe(db, id, newData) {
     return this.getById(db, id)
-      .update(newData)
+      .update(newData);
   },
   deleteRecipe(db, id) {
     return this.getById(db, id)
-      .delete()
+      .delete();
   },
   getCommentsForRecipe(db, recipe_id) {
     return db('comments')
       .join('users', {'author_id': 'users.id'})
       .select('comments.id', 'message', 'date_added', 'date_modified', 'author_id', db.ref('users.user_name').as('author'))
-      .where({recipe_id})
+      .where({recipe_id});
   },
   serializeRecipe(recipe) {
     return {
@@ -40,8 +40,8 @@ const RecipesService = {
       about: xss(recipe.about),
       ingredients: xss(recipe.ingredients),
       steps: xss(recipe.steps),
-    }
+    };
   }
-}
+};
 
 module.exports = RecipesService;

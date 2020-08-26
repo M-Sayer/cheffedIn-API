@@ -10,18 +10,18 @@ function userAuth(req, res, next) {
       if(!recipe) {
         return res.status(404).json({
           error: 'list not found'
-        })
+        });
       }
-      uid = recipe.author_id
+      uid = recipe.author_id;
       if(uid !== reqId) {
         return res.status(401).json({
           error: 'unauthorized access'
-        })
+        });
       }
-      req.recipe = recipe
-      next()
+      req.recipe = recipe;
+      next();
     })
-    .catch(next)
+    .catch(next);
 }
 
 module.exports = userAuth;

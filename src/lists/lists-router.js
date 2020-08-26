@@ -1,54 +1,54 @@
 const express = require('express');
 
 const ListsService = require('./lists-service');
-const RecipesService = require('../recipes/recipes-service')
+const RecipesService = require('../recipes/recipes-service');
 const listsRouter = express.Router();
-const jwtAuth = require('../middleware/jwt-auth')
-const userAuth = require('../middleware/lists-user-auth')
+const jwtAuth = require('../middleware/jwt-auth');
+const userAuth = require('../middleware/lists-user-auth');
 
 
 //post new list
 listsRouter
   .route('/')
   .post(jwtAuth, express.json(), (req, res, next) => {
-    const newList = { ...req.body }
+    const newList = { ...req.body };
 
     for (const [key, value] of Object.entries(newList))
       if (value == null)
         return res.status(400).json({
           error: `Missing '${key}' in request body`
-        })
+        });
 
-    newList.author_id = req.user.id
+    newList.author_id = req.user.id;
 
     ListsService.postList(req.app.get('db'), newList)
       .then(list => {
-        res.status(201).json(ListsService.serializeList(list))
+        res.status(201).json(ListsService.serializeList(list));
       })
-      .catch(next)
-  })
+      .catch(next);
+  });
 
 listsRouter
   .route('/:list_id')
   .get(jwtAuth, userAuth, (req, res, next) => {
     if(req.list) {
-      res.send(ListsService.serializeList(req.list))
+      res.send(ListsService.serializeList(req.list));
     } else {
-      return res.status(500).json({ error: 'something went wrong, please try again later'})
+      return res.status(500).json({ error: 'something went wrong, please try again later'});
     }
   })
   .delete(jwtAuth, userAuth, (req, res, next) => {
     ListsService.deleteList(req.app.get('db'), req.params.list_id)
       .then(() => res.status(204).end())
-      .catch(next)
+      .catch(next);
   })
   .patch(jwtAuth, userAuth, express.json(), (req, res, next) => {
-    const newData = { ...req.body }
+    const newData = { ...req.body };
 
     ListsService.updateList(req.app.get('db'), req.params.list_id, newData)
       .then(() => res.status(204).end())
-      .catch(next)
-  })
+      .catch(next);
+  });
 
   //get all recipes for given list
 listsRouter
@@ -59,15 +59,15 @@ listsRouter
         if(!recipes) {
           return res.status(404).json({
             error: 'no recipes found'
-          })
+          });
         }
         let serializedRecipes = recipes.map(recipe => RecipesService.serializeRecipe(recipe)
-        )
+        );
 
-        res.send(serializedRecipes)
+        res.send(serializedRecipes);
       })
-      .catch(next)
-  })
+      .catch(next);
+  });
       
 
 //specific recipe in a list
@@ -77,21 +77,21 @@ listsRouter
     ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.params.recipe_id)
       .then(recipe => {
         if(!recipe) {
-          return res.status(404).json({error: 'not found'})
+          return res.status(404).json({error: 'not found'});
         }
         ListsService.deleteRecipeInList(req.app.get('db'), req.params.list_id, req.params.recipe_id)
-          .then(() => res.status(204).end())
+          .then(() => res.status(204).end());
       })
-      .catch(next)
+      .catch(next);
   })
   .post(jwtAuth, express.json(), (req, res, next) => {
-    const newEntry = { ...req.body }
+    const newEntry = { ...req.body };
 
     for (const [key, value] of Object.entries(newEntry))
     if (value == null)
       return res.status(400).json({
         error: `Missing '${key}' in request body`
-      })
+      });
 
     //check if recipe is already in list
     ListsService.getListById(req.app.get('db'), req.params.list_id)
@@ -99,24 +99,24 @@ listsRouter
         if(!list) {
           return res.status(404).json({
             error: 'list not found'
-          })
+          });
         }
         ListsService.getRecipeForListById(req.app.get('db'), req.params.list_id, req.params.recipe_id)
           .then(recipe => {
             if(!recipe) {
-              console.log(recipe)
+              console.log(recipe);
               return ListsService.addRecipeToList(req.app.get('db'), newEntry)
                 .then(() => res.status(200).end())
-                .catch(next)
+                .catch(next);
             }
             res.status(409).json({
               error: 'Recipe already in list'
-            }) 
-          })
-      })
+            }); 
+          });
+      });
 
     
-  })
+  });
 
 
 module.exports = listsRouter;

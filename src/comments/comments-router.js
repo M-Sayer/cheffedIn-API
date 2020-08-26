@@ -14,17 +14,17 @@ commentsRouter
       if (value == null)
         return res.status(400).json({
           error: `Missing '${key}' in request body`
-        })
+        });
 
-    newComment.author_id = req.user.id
+    newComment.author_id = req.user.id;
 
     CommentsService.createCommentForRecipe(req.app.get('db'), newComment)
       .then(comment => {
-        res.status(201).json(CommentsService.serializeComment(comment))
+        res.status(201).json(CommentsService.serializeComment(comment));
       })
-      .catch(next)
+      .catch(next);
 
-  })
+  });
 
 commentsRouter
   .route('/:comment_id')
@@ -33,7 +33,7 @@ commentsRouter
     
     CommentsService.deleteComment(req.app.get('db'), commentId)
       .then(() => res.status(204).end())
-      .catch(next)
+      .catch(next);
   })
   .patch(jwtAuth, userAuth, express.json(), (req, res, next) => {
     const newData = { ...req.body };
@@ -42,11 +42,11 @@ commentsRouter
       if (value == null)
         return res.status(400).json({
           error: `Missing '${key}' in request body`
-        })
+        });
 
     CommentsService.updateComment(req.app.get('db'), req.params.comment_id, newData)
       .then(() => res.status(204).end())
-      .catch(next)
-  })
+      .catch(next);
+  });
 
 module.exports = commentsRouter;

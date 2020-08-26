@@ -1,4 +1,4 @@
-const CommentsService = require('../comments/comments-service')
+const CommentsService = require('../comments/comments-service');
 
 function userAuth(req, res, next) {
   //verify request user id is same as author id
@@ -12,17 +12,17 @@ function userAuth(req, res, next) {
       if(!comment) {
         return res.status(404).json({
           error: 'comment not found'
-        })
+        });
       }
-      uid = comment.author_id
+      uid = comment.author_id;
       if(uid !== reqId) {
         return res.status(401).json({
           error: 'unauthorized access'
-        })
+        });
       } 
-      next()
+      next();
     })
-    .catch(next)
+    .catch(next);
 }
 
 module.exports = userAuth;
